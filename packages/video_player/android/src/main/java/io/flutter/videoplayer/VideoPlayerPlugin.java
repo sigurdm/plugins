@@ -227,6 +227,7 @@ public class VideoPlayerPlugin implements MethodCallHandler {
         result.success(player.getPosition());
       } else if (call.method.equals("dispose")) {
         player.dispose();
+        videoPlayers.remove(textureId);
         result.success(null);
       } else {
         result.notImplemented();
