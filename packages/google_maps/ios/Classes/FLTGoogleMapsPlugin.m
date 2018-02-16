@@ -76,7 +76,7 @@
       }
       [_maps removeAllObjects];
       result(nil);
-  } else if ([@"provideAPIKey" isEqualToString:call.method]) {
+  } else if ([@"provideApiKey" isEqualToString:call.method]) {
       NSDictionary* argsMap = call.arguments;
       [GMSServices provideAPIKey:argsMap[@"key"]];
       result(nil);
