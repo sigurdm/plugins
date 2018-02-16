@@ -1,11 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:google_maps/google_maps.dart';
+import 'api_key.dart';
 
 MapController mapController;
 
 void main() async {
   mapController = new MapController(size: new Size(200.0, 200.0));
-  await MapController.provideApiKey("!!!!Replace with your API key!!!");
+  await MapController.provideApiKey(api_key);
   await mapController.initialize();
   runApp(new MyApp());
 }
