@@ -79,7 +79,7 @@
   } else if ([@"provideAPIKey" isEqualToString:call.method]) {
       NSDictionary* argsMap = call.arguments;
       [GMSServices provideAPIKey:argsMap[@"key"]];
-      result(nil)
+      result(nil);
   } else if ([@"create" isEqualToString:call.method]) {
       NSDictionary* argsMap = call.arguments;
       NSNumber* width = argsMap[@"width"];
