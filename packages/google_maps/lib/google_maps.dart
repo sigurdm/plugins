@@ -18,6 +18,10 @@ class MapController {
     );
   }
 
+  void goto({double latitude: 0.0, double longitude: 0.0, double zoom: 10.0}) {
+    _channel.invokeMethod("goto", {"latitude": latitude, "longitude": longitude, "zoom": zoom});
+  }
+
   static Future<Null> provideApiKey(String key) async {
     await _channel.invokeMethod("provideApiKey", {"key": key});
   }
