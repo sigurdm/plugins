@@ -1,29 +1,31 @@
+import 'dart:async';
+import 'dart:ui';
 import 'package:flutter/material.dart';
 import 'package:google_maps/google_maps.dart';
 import 'api_key.dart';
-import 'dart:async';
-import 'dart:math';
 
 MapController mapController;
 
-class Location {
-  final double latitude;
-  final double longitude;
-  Location({this.latitude, this.longitude});
-}
+Location aarhus = new Location(
+  latitude: 56.172481,
+  longitude: 10.187329,
+);
 
-Location aarhus = new Location(latitude: 56.172481,
-            longitude:10.187329,);
-
-Location mountainView = new Location(latitude: 37.420924,
-  longitude:-122.083666,);
+Location mountainView = new Location(
+  latitude: 37.420924,
+  longitude: -122.083666,
+);
 
 List<Location> locations = [aarhus, mountainView];
 
 void main() async {
-  mapController = new MapController(size: new Size(200.0, 200.0));
+  mapController = new MapController(
+      size: const Size(200.0, 200.0),
+      initialPosition: new CameraPosition(location: locations[0], zoom: 10.0));
   await MapController.provideApiKey(api_key);
   await mapController.initialize();
+  mapController.addMarker(location: aarhus, snippet: "Aarhus");
+  mapController.addMarker(location: mountainView, snippet: "Mountain View");
   runApp(new MyApp());
 }
 
@@ -37,7 +39,7 @@ Widget makeCard(String text) {
       child: new ListTile(
         title: new Text(
           text,
-          style: new TextStyle(color: Colors.blue),
+          style: const TextStyle(color: Colors.blue),
         ),
       ),
     ),
@@ -61,8 +63,8 @@ class _MyAppState extends State<MyApp> {
   Widget build(BuildContext context) {
     final Matrix4 scale = new Matrix4.identity()
 //    ..scale(2.0, 1.0)
-     // ..rotateZ(PI * .1)
-    ;//..rotateZ(PI);;//..rotateZ(PI);//..scale(2.0);
+        // ..rotateZ(PI * .1)
+        ; //..rotateZ(PI);;//..rotateZ(PI);//..scale(2.0);
 
     return new MaterialApp(
       //  debugShowCheckedModeBanner: false,
@@ -71,35 +73,42 @@ class _MyAppState extends State<MyApp> {
         primarySwatch: Colors.blue,
       ),
       home: new Scaffold(
-        floatingActionButton: new FloatingActionButton(onPressed: () {
-          final Location oldLocation = locations[locationIndex];
-          locationIndex = (locationIndex + 1) % locations.length;
+        floatingActionButton: new FloatingActionButton(
+          onPressed: () {
+            final Location oldLocation = locations[locationIndex];
+            locationIndex = (locationIndex + 1) % locations.length;
 
-          final Location newLocation = locations[locationIndex];
-          mapController.goto(
-            latitude: oldLocation.latitude,
-            longitude: oldLocation.longitude,
-            zoom: 4.0,
-          );
-          new Future<Null>.delayed(const Duration(milliseconds: 1000)).then((_) {
-            mapController.goto(
-              latitude: newLocation.latitude,
-              longitude: newLocation.longitude,
+            final Location newLocation = locations[locationIndex];
+            mapController.goto(new CameraPosition(
+              location: oldLocation,
               zoom: 4.0,
-            );
-          });
-          new Future<Null>.delayed(const Duration(milliseconds: 2000)).then((_) {
-            mapController.goto(
-              latitude: newLocation.latitude,
-              longitude: newLocation.longitude,
-              zoom: 11.0,
-            );
-          });
-        }, child: new Icon(Icons.airplanemode_active),),
+            ));
+            new Future<Null>.delayed(const Duration(milliseconds: 1000))
+                .then((_) {
+              mapController.goto(new CameraPosition(
+                location: newLocation,
+                zoom: 4.0,
+              ));
+            });
+            new Future<Null>.delayed(const Duration(milliseconds: 2000))
+                .then((_) {
+              mapController.goto(new CameraPosition(
+                location: newLocation,
+                zoom: 11.0,
+              ));
+            });
+          },
+          child: new Icon(Icons.airplanemode_active),
+        ),
         appBar: new AppBar(
           title: const Text("Google maps example"),
         ),
-        drawer: const Drawer(child: const Text("Drawer")),
+        drawer: const Drawer(
+            child: const Center(
+                child: const Text(
+          "Drawer",
+          style: const TextStyle(fontSize: 18.0),
+        ),),),
         body: new Column(
           children: <Widget>[
             new Expanded(
@@ -109,16 +118,17 @@ class _MyAppState extends State<MyApp> {
                   makeCard("Maps"),
                   makeCard("Inline"),
                   makeCard("Widget"),
-                  new Transform(transform: scale,
-                    child:new Container(
-                    margin: const EdgeInsets.all(4.0),
-                    child: new Material(
-                      type: MaterialType.card,
-                      elevation: 2.0,
-                      borderRadius:
-                          new BorderRadius.all(new Radius.circular(10.0)),
-                      key: new GlobalKey(debugLabel: "mapcard"),
-                      child:  new SizedBox(
+                  new Transform(
+                    transform: scale,
+                    child: new Container(
+                      margin: const EdgeInsets.all(4.0),
+                      child: new Material(
+                        type: MaterialType.card,
+                        elevation: 2.0,
+                        borderRadius:
+                            const BorderRadius.all(const Radius.circular(10.0)),
+                        key: new GlobalKey(debugLabel: "mapcard"),
+                        child: new SizedBox(
                           height: 250.0,
                           child: new Center(
                             child: new Stack(
@@ -144,19 +154,18 @@ class _MyAppState extends State<MyApp> {
                     ),
                   ),
                   makeCard("flow::Layer -> CALayers"),
-                  makeCard("Not"),
+                  makeCard("Now"),
                   makeCard("Interactive"),
-              new Transform(transform: scale,
-                child: makeCard("Yet")),
-                  makeCard("Though"),
+                  new Transform(transform: scale, child: makeCard("!!")),
+                  makeCard("H"),
                   makeCard("H"),
                   makeCard("H"),
                   makeCard("H"),
                 ],
               ),
             ),
-            new Card(
-              child: new ListTile(
+            const Card(
+              child: const ListTile(
                 title: const Text("Bottom bar"),
               ),
             ),
